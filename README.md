@@ -21,4 +21,4 @@
 **Manual Option**
 **nvm use 20.19.0**
 
-*Note: A .nvmrc file is included in the project root to document the Node version. If your environment supports NVM, you can use it to automatically pick the correct version.*
+_Note: A .nvmrc file is included in the project root to document the Node version. If your environment supports NVM, you can use it to automatically pick the correct version._

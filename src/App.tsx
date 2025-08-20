@@ -1,12 +1,7 @@
 import './App.css'
 
 function App() {
-
-  return (
-    <>
-      Async-race
-    </>
-  )
+  return <>Async-race</>
 }
 
 export default App
