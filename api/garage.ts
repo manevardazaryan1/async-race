@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Cars, Car } from '../types/Garage'
+import type { Cars, Car } from '../types/Garage'
 
 export const getCars = async (
   api_base_url: string,
@@ -56,9 +56,10 @@ export const deleteCar = async (
   api_base_url: string,
   endpoint: string,
   id: number,
-): Promise<void> => {
+): Promise<number> => {
   try {
     await axios.delete(`${api_base_url}/${endpoint}/${id}`)
+    return id
   } catch (error) {
     throw error
   }

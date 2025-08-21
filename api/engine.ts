@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { EngineStartResponse, DriveResponse } from '../types/Engine'
+import type { EngineStartResponse, DriveResponse } from '../types/Engine'
 
 export const startEngine = async (
   api_base_url: string,
   endpoint: string,
   status: string,
   id: number,
-): Promise<EngineStartResponse> => {
+): Promise<{ id: number; data: EngineStartResponse }> => {
   try {
     const response = await axios.patch<EngineStartResponse>(`${api_base_url}/${endpoint}`, null, {
       params: {
@@ -14,7 +14,7 @@ export const startEngine = async (
         status,
       },
     })
-    return response.data
+    return { id, data: response.data }
   } catch (error) {
     throw error
   }
@@ -25,7 +25,7 @@ export const stopEngine = async (
   endpoint: string,
   status: string,
   id: number,
-): Promise<void> => {
+): Promise<number> => {
   try {
     await axios.patch(`${api_base_url}/${endpoint}`, null, {
       params: {
@@ -33,6 +33,7 @@ export const stopEngine = async (
         status,
       },
     })
+    return id
   } catch (error) {
     throw error
   }
@@ -43,15 +44,15 @@ export const driveCar = async (
   endpoint: string,
   status: string,
   id: number,
-): Promise<boolean> => {
+): Promise<number> => {
   try {
-    const response = await axios.patch<DriveResponse>(`${api_base_url}/${endpoint}`, null, {
+    await axios.patch<DriveResponse>(`${api_base_url}/${endpoint}`, null, {
       params: {
         id,
         status,
       },
     })
-    return response.data.success
+    return id
   } catch (error) {
     throw error
   }

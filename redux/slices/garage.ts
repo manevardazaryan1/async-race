@@ -1,0 +1,80 @@
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type { GarageState, Cars, Car } from '../../types/Garage'
+import { getCarsAsync, createCarAsync, deleteCarAsync, updateCarAsync } from '../../services/garage'
+
+const initialState: GarageState = {
+  cars: [],
+  totalCount: 0,
+  status: 'idle',
+  error: null,
+}
+
+const garageSlice = createSlice({
+  name: 'garage',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCarsAsync.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getCarsAsync.fulfilled, (state, action: PayloadAction<Cars>) => {
+        state.status = 'succeeded'
+        state.cars = action.payload.cars
+        state.totalCount = action.payload.totalCount
+      })
+      .addCase(getCarsAsync.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Failed to load cars'
+      })
+      .addCase(createCarAsync.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(createCarAsync.fulfilled, (state, action: PayloadAction<Car>) => {
+        state.status = 'succeeded'
+        state.cars.push(action.payload)
+        state.totalCount += 1
+      })
+      .addCase(createCarAsync.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Failed to create car'
+      })
+      .addCase(deleteCarAsync.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(deleteCarAsync.fulfilled, (state, action: PayloadAction<number>) => {
+        state.status = 'succeeded'
+        state.cars = state.cars.filter((car) => car.id !== action.payload)
+        state.totalCount -= 1
+      })
+      .addCase(deleteCarAsync.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Failed to delete car'
+      })
+      .addCase(updateCarAsync.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateCarAsync.fulfilled, (state, action: PayloadAction<Car | null>) => {
+        state.status = 'succeeded'
+
+        if (!action.payload) return
+
+        const index = state.cars.findIndex((car) => car.id === action.payload!.id)
+
+        if (index) {
+          state.cars[index] = action.payload
+        }
+      })
+      .addCase(updateCarAsync.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Failed to update car'
+      })
+  },
+})
+
+export default garageSlice.reducer

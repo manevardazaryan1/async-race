@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Winners, Winner } from '../types/Winners'
+import type { Winners, Winner } from '../types/Winners'
 
 export const getWinners = async (
   api_base_url: string,
@@ -64,9 +64,10 @@ export const deleteWinner = async (
   api_base_url: string,
   endpoint: string,
   id: number,
-): Promise<void> => {
+): Promise<number> => {
   try {
     await axios.delete(`${api_base_url}/${endpoint}/${id}`)
+    return id
   } catch (error) {
     throw error
   }
@@ -78,7 +79,7 @@ export const updateWinner = async (
   id: number,
   wins?: number,
   time?: number,
-): Promise<Winner> => {
+): Promise<Winner | null> => {
   try {
     const response = await axios.put<Winner>(`${api_base_url}/${endpoint}/${id}`, {
       wins,
