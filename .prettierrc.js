@@ -1,5 +1,5 @@
 const config = {
-  printWidth: 120,
+  printWidth: 100,
   semi: false,
   trailingComma: 'all',
   singleQuote: true,

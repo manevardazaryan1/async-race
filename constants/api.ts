@@ -1,4 +1,4 @@
-export const API = 'http://127.0.0.1:3000'
+export const API_BASE_URL = 'http://127.0.0.1:3000'
 
 export const API_ENDPOINTS = {
   GARAGE: 'garage',
@@ -6,7 +6,7 @@ export const API_ENDPOINTS = {
   WINNERS: 'winners',
 }
 
-export const STATUS_TYPES = {
+export const ENGINE_STATUS_TYPES = {
   STARTED: 'started',
   STOPPED: 'stopped',
   DRIVE: 'drive',

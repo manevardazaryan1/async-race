@@ -1,17 +1,17 @@
 import axios from 'axios'
-import { API_ENDPOINTS } from '../constants/api'
 import { EngineStartResponse, DriveResponse } from '../types/Engine'
 
 export const startEngine = async (
   api_base_url: string,
-  id: number,
+  endpoint: string,
   status: string,
-): Promise<EngineStartResponse | null> => {
+  id: number,
+): Promise<EngineStartResponse> => {
   try {
-    const response = await axios.patch<EngineStartResponse>(`${api_base_url}/${API_ENDPOINTS.ENGINE}`, {
+    const response = await axios.patch<EngineStartResponse>(`${api_base_url}/${endpoint}`, null, {
       params: {
         id,
-        status: `${status}`,
+        status,
       },
     })
     return response.data
@@ -20,12 +20,17 @@ export const startEngine = async (
   }
 }
 
-export const stopEngine = async (api_base_url: string, id: number, status: string): Promise<void> => {
+export const stopEngine = async (
+  api_base_url: string,
+  endpoint: string,
+  status: string,
+  id: number,
+): Promise<void> => {
   try {
-    await axios.patch(`${api_base_url}/${API_ENDPOINTS.ENGINE}`, {
+    await axios.patch(`${api_base_url}/${endpoint}`, null, {
       params: {
         id,
-        status: `${status}`,
+        status,
       },
     })
   } catch (error) {
@@ -33,15 +38,19 @@ export const stopEngine = async (api_base_url: string, id: number, status: strin
   }
 }
 
-export const driveCar = async (api_base_url: string, id: number, status: string): Promise<boolean> => {
+export const driveCar = async (
+  api_base_url: string,
+  endpoint: string,
+  status: string,
+  id: number,
+): Promise<boolean> => {
   try {
-    const response = await axios.patch<DriveResponse>(`${api_base_url}/${API_ENDPOINTS.ENGINE}`, {
+    const response = await axios.patch<DriveResponse>(`${api_base_url}/${endpoint}`, null, {
       params: {
         id,
-        status: `${status}`,
+        status,
       },
     })
-
     return response.data.success
   } catch (error) {
     throw error
