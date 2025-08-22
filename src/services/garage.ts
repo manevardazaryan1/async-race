@@ -4,7 +4,7 @@ import { getCars, getCar, createCar, deleteCar, updateCar } from '../api/garage'
 
 export const getCarsAsync = createAsyncThunk(
   'garage/getCars',
-  ({ page, limit = GARAGE_VIEW_PAGE_SIZE }: { page: number; limit: number }) =>
+  ({ page, limit = GARAGE_VIEW_PAGE_SIZE }: { page: number; limit?: number }) =>
     getCars(API_BASE_URL, API_ENDPOINTS.GARAGE, page, limit),
 )
 

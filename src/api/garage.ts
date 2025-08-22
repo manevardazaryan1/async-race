@@ -7,32 +7,23 @@ export const getCars = async (
   page: number,
   limit: number,
 ): Promise<Cars> => {
-  try {
-    const response = await axios.get<Car[]>(`${api_base_url}/${endpoint}`, {
-      params: {
-        _page: page,
-        _limit: limit,
-      },
-    })
+  const response = await axios.get<Car[]>(`${api_base_url}/${endpoint}`, {
+    params: {
+      _page: page,
+      _limit: limit,
+    },
+  })
 
-    const totalCount = parseInt(response.headers['x-total-count']) || 0
-
-    return {
-      cars: response.data,
-      totalCount: totalCount,
-    }
-  } catch (error) {
-    throw error
+  const totalCount = parseInt(response.headers['x-total-count']) || 0
+  return {
+    cars: response.data,
+    totalCount: totalCount,
   }
 }
 
 export const getCar = async (api_base_url: string, endpoint: string, id: number): Promise<Car> => {
-  try {
-    const response = await axios.get<Car>(`${api_base_url}/${endpoint}/${id}`)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.get<Car>(`${api_base_url}/${endpoint}/${id}`)
+  return response.data
 }
 
 export const createCar = async (
@@ -41,15 +32,11 @@ export const createCar = async (
   name: string,
   color: string,
 ): Promise<Car> => {
-  try {
-    const response = await axios.post<Car>(`${api_base_url}/${endpoint}`, {
-      name,
-      color,
-    })
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.post<Car>(`${api_base_url}/${endpoint}`, {
+    name,
+    color,
+  })
+  return response.data
 }
 
 export const deleteCar = async (
@@ -57,12 +44,8 @@ export const deleteCar = async (
   endpoint: string,
   id: number,
 ): Promise<number> => {
-  try {
-    await axios.delete(`${api_base_url}/${endpoint}/${id}`)
-    return id
-  } catch (error) {
-    throw error
-  }
+  await axios.delete(`${api_base_url}/${endpoint}/${id}`)
+  return id
 }
 
 export const updateCar = async (
@@ -72,14 +55,9 @@ export const updateCar = async (
   name?: string,
   color?: string,
 ): Promise<Car | null> => {
-  try {
-    const response = await axios.put<Car>(`${api_base_url}/${endpoint}/${id}`, {
-      name,
-      color,
-    })
-
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.put<Car>(`${api_base_url}/${endpoint}/${id}`, {
+    name,
+    color,
+  })
+  return response.data
 }

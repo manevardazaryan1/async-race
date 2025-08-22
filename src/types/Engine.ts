@@ -1,3 +1,5 @@
+import type { Status } from './App'
+
 export interface EngineStartResponse {
   velocity: number
   distance: number
@@ -11,6 +13,6 @@ export interface EngineState {
   velocity: Record<number, number>
   distance: Record<number, number>
   blocked: Record<number, boolean>
-  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  status: Status
   error: string | null
 }

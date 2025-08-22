@@ -1,3 +1,5 @@
+import type { Status } from './App'
+
 export interface Car {
   name: string
   color: string
@@ -12,6 +14,18 @@ export interface Cars {
 export interface GarageState {
   cars: Car[]
   totalCount: number
-  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  status: Status
+  creationStatus: Status
   error: string | null
+}
+
+export interface CarCreationEditionPanelProps {
+  editingCar?: Car | null
+  onCompleteEdit?: () => void
+  status: string
+}
+
+export interface useCarCreationEditionPanelProps {
+  editingCar?: Car | null
+  onCompleteEdit?: () => void
 }

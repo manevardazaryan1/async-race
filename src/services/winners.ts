@@ -17,9 +17,9 @@ export const getWinnersAsync = createAsyncThunk(
     order = WINNERS_ORDERING_TYPE,
   }: {
     page: number
-    limit: number
-    sort: string
-    order: string
+    limit?: number
+    sort?: string
+    order?: string
   }) => getWinners(API_BASE_URL, API_ENDPOINTS.WINNERS, page, limit, sort, order),
 )
 

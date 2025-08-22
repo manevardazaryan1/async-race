@@ -1,3 +1,5 @@
+import type { Status } from './App'
+
 export interface Winner {
   id: number
   wins: number
@@ -12,6 +14,6 @@ export interface Winners {
 export interface WinnersState {
   winners: Winner[]
   totalCount: number
-  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  status: Status
   error: string | null
 }

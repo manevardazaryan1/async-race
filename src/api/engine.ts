@@ -7,17 +7,13 @@ export const startEngine = async (
   status: string,
   id: number,
 ): Promise<{ id: number; data: EngineStartResponse }> => {
-  try {
-    const response = await axios.patch<EngineStartResponse>(`${api_base_url}/${endpoint}`, null, {
-      params: {
-        id,
-        status,
-      },
-    })
-    return { id, data: response.data }
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.patch<EngineStartResponse>(`${api_base_url}/${endpoint}`, null, {
+    params: {
+      id,
+      status,
+    },
+  })
+  return { id, data: response.data }
 }
 
 export const stopEngine = async (
@@ -26,17 +22,13 @@ export const stopEngine = async (
   status: string,
   id: number,
 ): Promise<number> => {
-  try {
-    await axios.patch(`${api_base_url}/${endpoint}`, null, {
-      params: {
-        id,
-        status,
-      },
-    })
-    return id
-  } catch (error) {
-    throw error
-  }
+  await axios.patch(`${api_base_url}/${endpoint}`, null, {
+    params: {
+      id,
+      status,
+    },
+  })
+  return id
 }
 
 export const driveCar = async (
@@ -45,15 +37,11 @@ export const driveCar = async (
   status: string,
   id: number,
 ): Promise<number> => {
-  try {
-    await axios.patch<DriveResponse>(`${api_base_url}/${endpoint}`, null, {
-      params: {
-        id,
-        status,
-      },
-    })
-    return id
-  } catch (error) {
-    throw error
-  }
+  await axios.patch<DriveResponse>(`${api_base_url}/${endpoint}`, null, {
+    params: {
+      id,
+      status,
+    },
+  })
+  return id
 }

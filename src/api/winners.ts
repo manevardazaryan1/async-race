@@ -9,23 +9,18 @@ export const getWinners = async (
   sort: string,
   order: string,
 ): Promise<Winners> => {
-  try {
-    const response = await axios.get<Winner[]>(`${api_base_url}/${endpoint}`, {
-      params: {
-        _page: page,
-        _limit: limit,
-        _sort: sort,
-        _order: order,
-      },
-    })
+  const response = await axios.get<Winner[]>(`${api_base_url}/${endpoint}`, {
+    params: {
+      _page: page,
+      _limit: limit,
+      _sort: sort,
+      _order: order,
+    },
+  })
 
-    const totalCount = parseInt(response.headers['x-total-count']) || 0
-    const winners = response.data
-
-    return { winners, totalCount }
-  } catch (error) {
-    throw error
-  }
+  const totalCount = parseInt(response.headers['x-total-count']) || 0
+  const winners = response.data
+  return { winners, totalCount }
 }
 
 export const getWinner = async (
@@ -33,12 +28,8 @@ export const getWinner = async (
   endpoint: string,
   id: number,
 ): Promise<Winner> => {
-  try {
-    const response = await axios.get<Winner>(`${api_base_url}/${endpoint}/${id}`)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.get<Winner>(`${api_base_url}/${endpoint}/${id}`)
+  return response.data
 }
 
 export const createWinner = async (
@@ -48,16 +39,12 @@ export const createWinner = async (
   wins: number,
   time: number,
 ): Promise<Winner> => {
-  try {
-    const response = await axios.post<Winner>(`${api_base_url}/${endpoint}`, {
-      id,
-      wins,
-      time,
-    })
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.post<Winner>(`${api_base_url}/${endpoint}`, {
+    id,
+    wins,
+    time,
+  })
+  return response.data
 }
 
 export const deleteWinner = async (
@@ -65,12 +52,8 @@ export const deleteWinner = async (
   endpoint: string,
   id: number,
 ): Promise<number> => {
-  try {
-    await axios.delete(`${api_base_url}/${endpoint}/${id}`)
-    return id
-  } catch (error) {
-    throw error
-  }
+  await axios.delete(`${api_base_url}/${endpoint}/${id}`)
+  return id
 }
 
 export const updateWinner = async (
@@ -80,13 +63,9 @@ export const updateWinner = async (
   wins?: number,
   time?: number,
 ): Promise<Winner | null> => {
-  try {
-    const response = await axios.put<Winner>(`${api_base_url}/${endpoint}/${id}`, {
-      wins,
-      time,
-    })
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await axios.put<Winner>(`${api_base_url}/${endpoint}/${id}`, {
+    wins,
+    time,
+  })
+  return response.data
 }

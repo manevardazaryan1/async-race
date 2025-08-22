@@ -1,8 +1,9 @@
 const config = {
-  printWidth: 100,
+  singleQuote: true,
   semi: false,
   trailingComma: 'all',
-  singleQuote: true,
+  printWidth: 100,
+  jsxSingleQuote: true,
 }
 
 export default config
