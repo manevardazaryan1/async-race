@@ -1,15 +1,17 @@
-import { List, ListItem, Typography, Pagination } from '@mui/material'
-import { Button } from '../../shared/ui/Button'
+import { useRef } from 'react'
+import { Typography } from '@mui/material'
 import { STATUS, GARAGE_VIEW_NAME } from '../../constants/app'
-import useGarage from '../../hooks/useGarage'
+import useGarage from '../../hooks/garage/useGarage'
+import Cars from '../../components/Car/Cars'
 import CreationEditionPanel from '../../components/Car/CreationEditionPanel'
+import Pagination from '../../shared/ui/Pagination'
+import RacePanel from '../../components/Car/RacePanel'
 
 const Garage = () => {
   const {
     cars,
     totalCount,
     status,
-    creationStatus,
     editingCar,
     page,
     totalPages,
@@ -17,7 +19,10 @@ const Garage = () => {
     handleEdit,
     completeEdit,
     handlePageChange,
+    handleDrive,
+    handleStop,
   } = useGarage()
+  const carRefs = useRef<Record<number, HTMLDivElement | null>>({})
 
   return (
     <>
@@ -29,34 +34,19 @@ const Garage = () => {
           No cars available
         </Typography>
       )}
-      <CreationEditionPanel
-        editingCar={editingCar}
-        onCompleteEdit={completeEdit}
-        status={creationStatus}
+      <RacePanel cars={cars} carRefs={carRefs} />
+      <CreationEditionPanel editingCar={editingCar} onCompleteEdit={completeEdit} />
+      <Cars
+        cars={cars}
+        carRefs={carRefs}
+        totalCount={totalCount}
+        status={status}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        handleDrive={handleDrive}
+        handleStop={handleStop}
       />
-      <List>
-        {cars.map((car) => (
-          <ListItem key={car.id}>
-            {car.name} - <span style={{ color: car.color }}>{car.color}</span>
-            <Button customType='secondary' customVariant='outlined' onClick={() => handleEdit(car)}>
-              Update
-            </Button>
-            <Button
-              customType='secondary'
-              customVariant='outlined'
-              onClick={() => handleDelete(car.id)}
-            >
-              Delete
-            </Button>
-          </ListItem>
-        ))}
-      </List>
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handlePageChange}
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
-      />
+      <Pagination count={totalPages} page={page} handlePageChange={handlePageChange} />
     </>
   )
 }

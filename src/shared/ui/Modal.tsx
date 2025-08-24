@@ -14,7 +14,7 @@ const Modal = ({ isOpen, children }: ModalProps) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'black',
+        backgroundColor: 'blue',
       }}
     >
       <div>{children}</div>

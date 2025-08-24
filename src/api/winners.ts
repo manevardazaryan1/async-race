@@ -4,10 +4,10 @@ import type { Winners, Winner } from '../types/Winners'
 export const getWinners = async (
   api_base_url: string,
   endpoint: string,
-  page: number,
-  limit: number,
-  sort: string,
-  order: string,
+  page?: number,
+  limit?: number,
+  sort?: string,
+  order?: string,
 ): Promise<Winners> => {
   const response = await axios.get<Winner[]>(`${api_base_url}/${endpoint}`, {
     params: {

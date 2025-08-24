@@ -8,7 +8,6 @@ const initialState: GarageState = {
   cars: [],
   totalCount: 0,
   status: STATUS.IDLE,
-  creationStatus: STATUS.IDLE,
   error: null,
 }
 
@@ -32,16 +31,16 @@ const garageSlice = createSlice({
         state.error = action.error.message || 'Failed to load cars'
       })
       .addCase(createCarAsync.pending, (state) => {
-        state.creationStatus = STATUS.LOADING
+        state.status = STATUS.LOADING
         state.error = null
       })
       .addCase(createCarAsync.fulfilled, (state, action: PayloadAction<Car>) => {
-        state.creationStatus = STATUS.SUCCEEDED
+        state.status = STATUS.SUCCEEDED
         state.cars.push(action.payload)
         state.totalCount += 1
       })
       .addCase(createCarAsync.rejected, (state, action) => {
-        state.creationStatus = STATUS.FAILED
+        state.status = STATUS.FAILED
         state.error = action.error.message || 'Failed to create car'
       })
       .addCase(deleteCarAsync.pending, (state) => {

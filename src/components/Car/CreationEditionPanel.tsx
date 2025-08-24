@@ -1,17 +1,12 @@
-import { memo } from 'react'
 import { DebounceInput } from 'react-debounce-input'
 import { Box, TextField, Typography, LinearProgress } from '@mui/material'
 import { Button } from '../../shared/ui/Button'
 import type { CarCreationEditionPanelProps } from '../../types/Garage'
 import { GENERATED_RANDOM_CARS_COUNT } from '../../constants/app'
-import useCreationEditionPanel from '../../hooks/useCreationEditionPanel'
+import useCreationEditionPanel from '../../hooks/garage/useCreationEditionPanel'
 import Modal from '../../shared/ui/Modal'
 
-const CreationEditionPanel = ({
-  editingCar,
-  onCompleteEdit,
-  status,
-}: CarCreationEditionPanelProps) => {
+const CreationEditionPanel = ({ editingCar, onCompleteEdit }: CarCreationEditionPanelProps) => {
   const {
     name,
     color,
@@ -44,7 +39,7 @@ const CreationEditionPanel = ({
         Generate Random Cars (100)
       </Button>
 
-      <Modal isOpen={status === 'loading' || isGenerating}>
+      <Modal isOpen={isGenerating}>
         <Box
           sx={{
             width: 300,
@@ -56,7 +51,7 @@ const CreationEditionPanel = ({
           }}
         >
           <Typography id='progress-modal-title' variant='h6' component='h2' mb={2}>
-            Generating Car...
+            Generating Cars...
           </Typography>
           <LinearProgress variant='determinate' value={progress} />
           <Typography mt={2}>{Math.round(progress)}%</Typography>
@@ -66,4 +61,4 @@ const CreationEditionPanel = ({
   )
 }
 
-export default memo(CreationEditionPanel)
+export default CreationEditionPanel

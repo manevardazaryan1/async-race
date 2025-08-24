@@ -16,7 +16,7 @@ export const getWinnersAsync = createAsyncThunk(
     sort = WINNERS_SORTING_TYPE,
     order = WINNERS_ORDERING_TYPE,
   }: {
-    page: number
+    page?: number
     limit?: number
     sort?: string
     order?: string

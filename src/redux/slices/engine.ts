@@ -59,8 +59,8 @@ const engineSlice = createSlice({
         state.blocked[action.payload] = true
       })
       .addCase(driveCarAsync.rejected, (state, action) => {
-        state.status = STATUS.SUCCEEDED
-        state.error = action.error.message || 'Failed to drive car'
+        state.status = STATUS.FAILED
+        state.error = action.payload as string
       })
   },
 })

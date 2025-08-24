@@ -16,3 +16,9 @@ export interface ModalProps {
   isOpen: boolean
   children: ReactNode
 }
+
+export interface PaginationPanelProps {
+  count: number
+  page: number
+  handlePageChange: (_: React.ChangeEvent<unknown>, value: number) => void
+}

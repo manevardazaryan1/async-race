@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { EngineStartResponse, DriveResponse } from '../types/Engine'
+import type { EngineStartResponse } from '../types/Engine'
 
 export const startEngine = async (
   api_base_url: string,
@@ -37,11 +37,13 @@ export const driveCar = async (
   status: string,
   id: number,
 ): Promise<number> => {
-  await axios.patch<DriveResponse>(`${api_base_url}/${endpoint}`, null, {
-    params: {
-      id,
-      status,
-    },
-  })
-  return id
+  try {
+    await axios.patch(`${api_base_url}/${endpoint}`, null, {
+      params: { id, status },
+    })
+    return id
+  } catch {
+    // don't let axios print the 500 stack trace
+    throw new Error(`Car ${id} crashed`)
+  }
 }

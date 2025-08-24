@@ -25,3 +25,30 @@ export const generateCarName = (
   const model = carModels[Math.floor(Math.random() * carModels.length)]
   return `${brand} ${model}`
 }
+
+export const animate = (
+  id: number,
+  status: string,
+  time: number,
+  distance: number = 1000,
+  carRefs: React.MutableRefObject<Record<number, HTMLDivElement | null>>,
+) => {
+  const car = carRefs.current[id]
+  if (!car) return 0
+  const style = window.getComputedStyle(car)
+  const matrix = new DOMMatrixReadOnly(style.transform)
+
+  const dis = status === 'stop' ? matrix.m41 : distance
+  if (car) {
+    car.style.transform = `translate(${dis}px)`
+    car.style.transition = `transform ${time}ms linear`
+  }
+}
+
+export const sortObjectByValue = (obj: { [key: string]: number }) => {
+  const entries = Object.entries(obj)
+
+  entries.sort((a, b) => a[1] - b[1])
+
+  return Object.fromEntries(entries)
+}

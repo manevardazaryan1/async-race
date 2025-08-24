@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import type { AppDispatch } from '../redux/store/store'
+import type { AppDispatch } from '../../redux/store/store'
 import { useDispatch } from 'react-redux'
-import type { useCarCreationEditionPanelProps } from '../types/Garage'
-import { createCarAsync, updateCarAsync } from '../services/garage'
-import { generateCarName, generateColor } from '../utils/helpers'
+import type { useCarCreationEditionPanelProps } from '../../types/Garage'
+import { createCarAsync, updateCarAsync } from '../../services/garage'
+import { generateCarName, generateColor } from '../../utils/helpers'
 
 const useCreationEditionPanel = ({
   editingCar,
@@ -25,17 +25,17 @@ const useCreationEditionPanel = ({
     }
   }, [editingCar])
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (!name) return
-    dispatch(createCarAsync({ name, color }))
+    await dispatch(createCarAsync({ name, color }))
     setName('')
     setColor('#000000')
   }
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const id = editingCar?.id
     if (!name || !id) return
-    dispatch(updateCarAsync({ id, name, color }))
+    await dispatch(updateCarAsync({ id, name, color }))
     onCompleteEdit?.()
   }
 
