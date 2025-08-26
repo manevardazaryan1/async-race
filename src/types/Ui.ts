@@ -20,5 +20,6 @@ export interface ModalProps {
 export interface PaginationPanelProps {
   count: number
   page: number
+  disabled: boolean
   handlePageChange: (_: React.ChangeEvent<unknown>, value: number) => void
 }

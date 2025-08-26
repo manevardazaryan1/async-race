@@ -13,7 +13,6 @@ export const generateColor = () => {
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)]
   }
-
   return color
 }
 
@@ -26,29 +25,21 @@ export const generateCarName = (
   return `${brand} ${model}`
 }
 
+export const getCurrentCoordinate = (car: HTMLDivElement | null): number | undefined => {
+  if (!car) return
+  const style = window.getComputedStyle(car)
+  const matrix = new DOMMatrixReadOnly(style.transform)
+  return matrix.m41
+}
+
 export const animate = (
   id: number,
-  status: string,
   time: number,
   distance: number = 1000,
   carRefs: React.MutableRefObject<Record<number, HTMLDivElement | null>>,
-) => {
+): void | undefined => {
   const car = carRefs.current[id]
-  if (!car) return 0
-  const style = window.getComputedStyle(car)
-  const matrix = new DOMMatrixReadOnly(style.transform)
-
-  const dis = status === 'stop' ? matrix.m41 : distance
-  if (car) {
-    car.style.transform = `translate(${dis}px)`
-    car.style.transition = `transform ${time}ms linear`
-  }
-}
-
-export const sortObjectByValue = (obj: { [key: string]: number }) => {
-  const entries = Object.entries(obj)
-
-  entries.sort((a, b) => a[1] - b[1])
-
-  return Object.fromEntries(entries)
+  if (!car) return
+  car.style.transform = `translate(${distance}px)`
+  car.style.transition = `transform ${time}ms linear`
 }

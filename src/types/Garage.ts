@@ -14,6 +14,10 @@ export interface Cars {
 export interface GarageState {
   cars: Car[]
   totalCount: number
+  isRacing: boolean
+  isUpdating: boolean
+  isSingleRacing: boolean
+  carsDrivingState: Record<number, boolean>
   status: Status
   error: string | null
 }

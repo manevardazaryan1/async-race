@@ -7,6 +7,10 @@ import { getCarsAsync, createCarAsync, deleteCarAsync, updateCarAsync } from '..
 const initialState: GarageState = {
   cars: [],
   totalCount: 0,
+  isRacing: false,
+  isUpdating: false,
+  isSingleRacing: false,
+  carsDrivingState: {},
   status: STATUS.IDLE,
   error: null,
 }
@@ -14,7 +18,21 @@ const initialState: GarageState = {
 const garageSlice = createSlice({
   name: 'garage',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsRacing: (state, action: PayloadAction<boolean>) => {
+      state.isRacing = action.payload
+    },
+    setIsDriving: (state, action: PayloadAction<{ id: number; isDriving: boolean }>) => {
+      const { id, isDriving } = action.payload
+      state.carsDrivingState[id] = isDriving
+    },
+    setIsSingleRacing: (state, action: PayloadAction<boolean>) => {
+      state.isSingleRacing = action.payload
+    },
+    setIsUpdating: (state, action: PayloadAction<boolean>) => {
+      state.isUpdating = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCarsAsync.pending, (state) => {
@@ -78,4 +96,5 @@ const garageSlice = createSlice({
   },
 })
 
+export const { setIsRacing, setIsSingleRacing, setIsDriving, setIsUpdating } = garageSlice.actions
 export default garageSlice.reducer

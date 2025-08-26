@@ -36,14 +36,15 @@ export const driveCar = async (
   endpoint: string,
   status: string,
   id: number,
+  signal?: AbortSignal,
 ): Promise<number> => {
   try {
     await axios.patch(`${api_base_url}/${endpoint}`, null, {
       params: { id, status },
+      signal,
     })
     return id
   } catch {
-    // don't let axios print the 500 stack trace
     throw new Error(`Car ${id} crashed`)
   }
 }

@@ -1,9 +1,11 @@
+import { memo } from 'react'
 import { DebounceInput } from 'react-debounce-input'
 import { Box, TextField, Typography, LinearProgress } from '@mui/material'
-import { Button } from '../../shared/ui/Button'
-import type { CarCreationEditionPanelProps } from '../../types/Garage'
-import { GENERATED_RANDOM_CARS_COUNT } from '../../constants/app'
 import useCreationEditionPanel from '../../hooks/garage/useCreationEditionPanel'
+import useRace from '../../hooks/garage/useRace'
+import { GENERATED_RANDOM_CARS_COUNT } from '../../constants/app'
+import type { CarCreationEditionPanelProps } from '../../types/Garage'
+import { Button } from '../../shared/ui/Button'
 import Modal from '../../shared/ui/Modal'
 
 const CreationEditionPanel = ({ editingCar, onCompleteEdit }: CarCreationEditionPanelProps) => {
@@ -20,6 +22,8 @@ const CreationEditionPanel = ({ editingCar, onCompleteEdit }: CarCreationEdition
     progress,
   } = useCreationEditionPanel({ editingCar, onCompleteEdit })
 
+  const { isRacing, isSingleRacing, isUpdating } = useRace()
+
   return (
     <Box>
       <DebounceInput
@@ -30,12 +34,24 @@ const CreationEditionPanel = ({ editingCar, onCompleteEdit }: CarCreationEdition
         onChange={handleNameChange}
         onKeyDown={handleKeyDown}
         placeholder='Car Name'
+        disabled={isRacing || isSingleRacing}
       />
-      <TextField type='color' value={color} onChange={handleColorChange} />
-      <Button onClick={editingCar ? handleUpdate : handleCreate} disabled={!name}>
+      <TextField
+        type='color'
+        value={color}
+        onChange={handleColorChange}
+        disabled={isRacing || isSingleRacing}
+      />
+      <Button
+        onClick={editingCar ? handleUpdate : handleCreate}
+        disabled={!name || isRacing || isSingleRacing}
+      >
         {editingCar ? 'Update' : 'Create'}
       </Button>
-      <Button onClick={() => handleGenerateRandomCars(GENERATED_RANDOM_CARS_COUNT)}>
+      <Button
+        onClick={() => handleGenerateRandomCars(GENERATED_RANDOM_CARS_COUNT)}
+        disabled={isRacing || isSingleRacing || isUpdating}
+      >
         Generate Random Cars (100)
       </Button>
 
@@ -61,4 +77,4 @@ const CreationEditionPanel = ({ editingCar, onCompleteEdit }: CarCreationEdition
   )
 }
 
-export default CreationEditionPanel
+export default memo(CreationEditionPanel)

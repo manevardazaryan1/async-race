@@ -20,12 +20,12 @@ export const WINNERS_SORTING_TYPES = {
   ID: 'id',
   WINS: 'wins',
   TIME: 'time',
-}
+} as const
 
 export const WINNERS_ORDERING_TYPES = {
   ASC: 'ASC',
   DESC: 'DESC',
-}
+} as const
 
 export const WINNERS_SORTING_TYPE = WINNERS_SORTING_TYPES.TIME
 

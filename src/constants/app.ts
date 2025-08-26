@@ -22,6 +22,7 @@ export const CAR_BRANDS = [
   'Nissan',
   'Kia',
 ]
+
 export const CAR_MODELS = [
   'Model S',
   'Mustang',

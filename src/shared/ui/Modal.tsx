@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Modal as MuiModal } from '@mui/material'
 import type { ModalProps } from '../../types/Ui'
 
@@ -22,4 +23,4 @@ const Modal = ({ isOpen, children }: ModalProps) => {
   )
 }
 
-export default Modal
+export default memo(Modal)

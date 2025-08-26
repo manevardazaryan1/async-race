@@ -4,8 +4,8 @@ import type { Cars, Car } from '../types/Garage'
 export const getCars = async (
   api_base_url: string,
   endpoint: string,
-  page: number,
-  limit: number,
+  page?: number,
+  limit?: number,
 ): Promise<Cars> => {
   const response = await axios.get<Car[]>(`${api_base_url}/${endpoint}`, {
     params: {

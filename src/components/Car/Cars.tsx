@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { List, Typography } from '@mui/material'
 import type { CarsPanelProps } from '../../types/Garage'
 import { STATUS } from '../../constants/app'
@@ -37,4 +38,4 @@ const Cars = ({
   )
 }
 
-export default Cars
+export default memo(Cars)

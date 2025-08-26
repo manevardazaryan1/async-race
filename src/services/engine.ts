@@ -12,9 +12,9 @@ export const stopEngineAsync = createAsyncThunk('engine/stopEngine', ({ id }: { 
 
 export const driveCarAsync = createAsyncThunk(
   'engine/driveCar',
-  async ({ id }: { id: number }, { rejectWithValue }) => {
+  async ({ id, signal }: { id: number; signal?: AbortSignal }, { rejectWithValue }) => {
     try {
-      await driveCar(API_BASE_URL, API_ENDPOINTS.ENGINE, ENGINE_STATUS_TYPES.DRIVE, id)
+      await driveCar(API_BASE_URL, API_ENDPOINTS.ENGINE, ENGINE_STATUS_TYPES.DRIVE, id, signal)
       return id
     } catch {
       return rejectWithValue(`Car ${id} crashed`)

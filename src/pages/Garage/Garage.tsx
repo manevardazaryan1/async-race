@@ -1,15 +1,16 @@
-import { useRef } from 'react'
 import { Typography } from '@mui/material'
-import { STATUS, GARAGE_VIEW_NAME } from '../../constants/app'
 import useGarage from '../../hooks/garage/useGarage'
+import useRace from '../../hooks/garage/useRace'
+import { STATUS, GARAGE_VIEW_NAME } from '../../constants/app'
 import Cars from '../../components/Car/Cars'
 import CreationEditionPanel from '../../components/Car/CreationEditionPanel'
-import Pagination from '../../shared/ui/Pagination'
 import RacePanel from '../../components/Car/RacePanel'
+import Pagination from '../../shared/ui/Pagination'
 
 const Garage = () => {
   const {
     cars,
+    carRefs,
     totalCount,
     status,
     editingCar,
@@ -19,11 +20,9 @@ const Garage = () => {
     handleEdit,
     completeEdit,
     handlePageChange,
-    handleDrive,
-    handleStop,
   } = useGarage()
-  const carRefs = useRef<Record<number, HTMLDivElement | null>>({})
 
+  const { handleDrive, handleStop, isRacing, isSingleRacing, isUpdating } = useRace()
   return (
     <>
       <Typography variant='h2' component='h1'>
@@ -46,7 +45,14 @@ const Garage = () => {
         handleDrive={handleDrive}
         handleStop={handleStop}
       />
-      <Pagination count={totalPages} page={page} handlePageChange={handlePageChange} />
+      {totalPages > 1 && (
+        <Pagination
+          count={totalPages}
+          page={page}
+          handlePageChange={handlePageChange}
+          disabled={isRacing || isSingleRacing || isUpdating}
+        />
+      )}
     </>
   )
 }

@@ -1,8 +1,7 @@
 import { Button as MuiButton } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { BUTTON_SIZES, BUTTON_TYPES } from '../../constants/ui'
-
 import type { CustomButtonProps } from '../../types/Ui'
+import { BUTTON_SIZES, BUTTON_TYPES } from '../../constants/ui'
 
 const StyledButton = styled(MuiButton, {
   shouldForwardProp: (prop) =>

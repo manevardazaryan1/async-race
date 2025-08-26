@@ -1,6 +1,8 @@
+import { memo } from 'react'
 import { ListItem, Box } from '@mui/material'
 import type { CarPanelProps } from '../../types/Garage'
 import { Button } from '../../shared/ui/Button'
+import useCar from '../../hooks/garage/useCar'
 
 const Car = ({
   car,
@@ -10,6 +12,7 @@ const Car = ({
   handleDrive,
   handleStop,
 }: CarPanelProps) => {
+  const { isRacing, isUpdating, carsDrivingState, isSingleRacing } = useCar()
   return (
     <>
       <ListItem key={car.id}>
@@ -18,6 +21,7 @@ const Car = ({
           customVariant='outlined'
           customSize='small'
           onClick={() => handleEdit(car)}
+          disabled={isRacing || isSingleRacing}
         >
           U
         </Button>
@@ -26,6 +30,7 @@ const Car = ({
           customVariant='outlined'
           customSize='small'
           onClick={() => handleDelete(car.id)}
+          disabled={isRacing || isSingleRacing}
         >
           R
         </Button>
@@ -34,6 +39,7 @@ const Car = ({
           customVariant='outlined'
           customSize='small'
           onClick={() => handleDrive({ id: car.id, carRefs })}
+          disabled={isRacing || isSingleRacing || isUpdating}
         >
           D
         </Button>
@@ -42,6 +48,7 @@ const Car = ({
           customVariant='outlined'
           customSize='small'
           onClick={() => handleStop({ id: car.id, carRefs })}
+          disabled={isRacing || !carsDrivingState[car.id]}
         >
           P
         </Button>
@@ -58,4 +65,4 @@ const Car = ({
   )
 }
 
-export default Car
+export default memo(Car)

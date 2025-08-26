@@ -1,4 +1,5 @@
 import type { Status } from './App'
+import { WINNERS_SORTING_TYPES, WINNERS_ORDERING_TYPES } from '../constants/api'
 
 export interface Winner {
   id: number
@@ -17,3 +18,7 @@ export interface WinnersState {
   status: Status
   error: string | null
 }
+
+export type WinnerSort = (typeof WINNERS_SORTING_TYPES)[keyof typeof WINNERS_SORTING_TYPES]
+
+export type WinnerOrder = (typeof WINNERS_ORDERING_TYPES)[keyof typeof WINNERS_ORDERING_TYPES]

@@ -1,11 +1,30 @@
+import { useEffect, useState, memo } from 'react'
 import { Typography } from '@mui/material'
-import type { RacePanelProps } from '../../types/Garage'
 import useRace from '../../hooks/garage/useRace'
+import type { RacePanelProps } from '../../types/Garage'
 import { Button } from '../../shared/ui/Button'
+import Modal from '../../shared/ui/Modal'
 
 const RacePanel = ({ cars, carRefs }: RacePanelProps) => {
-  const { messageForRaceResult, handleReset, handleRace } = useRace()
+  const {
+    messageForRaceResult,
+    messageForWinner,
+    isRacing,
+    isUpdating,
+    isSingleRacing,
+    handleReset,
+    handleRace,
+  } = useRace()
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
+  useEffect(() => {
+    if (messageForWinner) {
+      setIsOpen(true)
+    }
+    setTimeout(() => {
+      setIsOpen(false)
+    }, 2000)
+  }, [messageForWinner])
   return (
     <>
       <Typography variant='h5' gutterBottom>
@@ -17,6 +36,7 @@ const RacePanel = ({ cars, carRefs }: RacePanelProps) => {
         customVariant='outlined'
         customSize='small'
         onClick={() => handleReset({ cars, carRefs })}
+        disabled={!isRacing}
       >
         Reset
       </Button>
@@ -25,11 +45,13 @@ const RacePanel = ({ cars, carRefs }: RacePanelProps) => {
         customVariant='outlined'
         customSize='small'
         onClick={() => handleRace({ cars, carRefs })}
+        disabled={isRacing || isSingleRacing || isUpdating}
       >
         Race
       </Button>
+      <Modal isOpen={isOpen}>{messageForWinner}</Modal>
     </>
   )
 }
 
-export default RacePanel
+export default memo(RacePanel)
