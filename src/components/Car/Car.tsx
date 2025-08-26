@@ -3,6 +3,7 @@ import { ListItem, Box } from '@mui/material'
 import type { CarPanelProps } from '../../types/Garage'
 import { Button } from '../../shared/ui/Button'
 import useCar from '../../hooks/garage/useCar'
+import CarSvg from './CarSvg'
 
 const Car = ({
   car,
@@ -56,8 +57,9 @@ const Car = ({
           ref={(el: HTMLDivElement | null) => {
             carRefs.current[car.id] = el
           }}
-          style={{ backgroundColor: car.color, padding: '5px', width: '100px' }}
+          style={{ width: '100px' }}
         >
+          <CarSvg color={car.color} size={100} />
           {car.name} - <span style={{ color: car.color }}></span>
         </Box>
       </ListItem>
