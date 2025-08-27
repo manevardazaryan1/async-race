@@ -1,7 +1,7 @@
-# Async-race
+<h1><a id='top'>Async-race</a></h1>
 
-**Score:** 385 / 400 points  
-**Live Demo:** [https://async-race-silk.vercel.app/](https://async-race-silk.vercel.app/)
+## Score: 385 / 400 points  
+## Live Demo: [https://async-race-silk.vercel.app/](https://async-race-silk.vercel.app/)
 
 ![Async Race](./src/assets/app/async-race-app.webp)
 
@@ -98,5 +98,5 @@ npm run dev
 This project requires a **backend API** to function. The API is available at:  
 [https://github.com/mikhama/async-race-api](https://github.com/mikhama/async-race-api)
 
-[🔝 Back to top](#-async-race)
+[Tap to Top ⬆](#top)
 
