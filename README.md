@@ -73,22 +73,22 @@ _Note: A .nvmrc file is included in the project root to document the Node versio
 
 ## Installation and Running
 
-# Clone the repository
+### Clone the repository
 ```bash
 git clone https://github.com/manevardazaryan1/async-race
 ```
 
-# Navigate into the project folder
+### Navigate into the project folder
 ```bash
 cd async-race
 ```
 
-# Install dependencies
+### Install dependencies
 ```bash
 npm install
 ```
 
-# Run the app locally
+### Run the app locally
 ```bash
 npm run dev
 ```
