@@ -11,8 +11,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\"",
     "ci:format": "prettier --check .",
     "format:watch": "onchange '**/*.{js,ts,tsx,json,css,md}' -- prettier --write {{changed}}",
-    "preview": "vite preview",
-    "preinstall": "node -e \"if (process.version !== 'v20.19.0') { console.error('❌ Wrong Node version. Please use 20.19.0'); process.exit(1) }\""
+    "preview": "vite preview"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
