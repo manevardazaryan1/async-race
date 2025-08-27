@@ -58,7 +58,7 @@ const useRace = () => {
     [dispatch],
   )
 
-  const handleCrush = useCallback(({ id, carRefs }: SingleRaceContext) => {
+  const handleCrash = useCallback(({ id, carRefs }: SingleRaceContext) => {
     const coordinate = getCurrentCoordinate(carRefs.current[id]) as number
     animate(id, 0, coordinate, carRefs)
   }, [])
@@ -73,10 +73,10 @@ const useRace = () => {
       const datum = await dispatch(driveCarAsync({ id, signal: controller.signal }))
 
       if (driveCarAsync.rejected.match(datum)) {
-        handleCrush({ id, carRefs })
+        handleCrash({ id, carRefs })
       }
     },
-    [dispatch, handleCrush, handleStartEngine],
+    [dispatch, handleCrash, handleStartEngine],
   )
 
   const handleReset = useCallback(
@@ -117,7 +117,7 @@ const useRace = () => {
           setMessageForRaceResult(`Car ${name} finished!`)
         } else if (driveCarAsync.rejected.match(datum)) {
           setMessageForRaceResult(`${index}`)
-          handleCrush({ id, carRefs })
+          handleCrash({ id, carRefs })
         }
       } catch (err: unknown) {
         if (axios.isCancel(err)) return
@@ -128,7 +128,7 @@ const useRace = () => {
       race,
       getWinner: () => ({ id: winnerId, time: winningTime }),
     }
-  }, [dispatch, handleStartEngine, handleCrush])
+  }, [dispatch, handleStartEngine, handleCrash])
 
   const handleRace = useCallback(
     async ({ cars, carRefs }: RaceContext) => {
