@@ -17,50 +17,60 @@ const Car = ({
   return (
     <>
       <ListItem key={car.id}>
-        <Button
-          customType='secondary'
-          customVariant='outlined'
-          customSize='small'
-          onClick={() => handleEdit(car)}
-          disabled={isRacing || isSingleRacing}
-        >
-          U
-        </Button>
-        <Button
-          customType='secondary'
-          customVariant='outlined'
-          customSize='small'
-          onClick={() => handleDelete(car.id)}
-          disabled={isRacing || isSingleRacing}
-        >
-          R
-        </Button>
-        <Button
-          customType='secondary'
-          customVariant='outlined'
-          customSize='small'
-          onClick={() => handleDrive({ id: car.id, carRefs })}
-          disabled={isRacing || isSingleRacing || isUpdating}
-        >
-          D
-        </Button>
-        <Button
-          customType='secondary'
-          customVariant='outlined'
-          customSize='small'
-          onClick={() => handleStop({ id: car.id, carRefs })}
-          disabled={isRacing || !carsDrivingState[car.id]}
-        >
-          P
-        </Button>
-        <Box
-          ref={(el: HTMLDivElement | null) => {
-            carRefs.current[car.id] = el
-          }}
-          style={{ width: '100px' }}
-        >
-          <CarSvg color={car.color} size={100} />
-          {car.name} - <span style={{ color: car.color }}></span>
+        <Box className='car-control-box'>
+          <Button
+            customType='secondary'
+            customVariant='outlined'
+            customSize='small'
+            onClick={() => handleEdit(car)}
+            disabled={isRacing || isSingleRacing}
+            className='car-control-button'
+          >
+            U
+          </Button>
+          <Button
+            customType='secondary'
+            customVariant='outlined'
+            customSize='small'
+            onClick={() => handleDelete(car.id)}
+            disabled={isRacing || isSingleRacing}
+            className='car-control-button'
+          >
+            R
+          </Button>
+          <Button
+            customType='secondary'
+            customVariant='outlined'
+            customSize='small'
+            onClick={() => handleDrive({ id: car.id, carRefs })}
+            disabled={isRacing || isSingleRacing || isUpdating}
+            className='car-control-button'
+          >
+            D
+          </Button>
+          <Button
+            customType='secondary'
+            customVariant='outlined'
+            customSize='small'
+            onClick={() => handleStop({ id: car.id, carRefs })}
+            disabled={isRacing || !carsDrivingState[car.id]}
+            className='car-control-button'
+          >
+            P
+          </Button>
+        </Box>
+        <Box className='car-box'>
+          <Box
+            ref={(el: HTMLDivElement | null) => {
+              carRefs.current[car.id] = el
+            }}
+            className='car-icon'
+          >
+            <CarSvg color={car.color} size={70} />
+          </Box>
+          <Box className='car-name' style={{ color: car.color }}>
+            {car.name}
+          </Box>
         </Box>
       </ListItem>
     </>

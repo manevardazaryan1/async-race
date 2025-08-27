@@ -13,6 +13,7 @@ const initialState: WinnersState = {
   winners: [],
   totalCount: 0,
   status: STATUS.IDLE,
+  fetchingStatus: STATUS.IDLE,
   error: null,
 }
 

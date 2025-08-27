@@ -13,8 +13,10 @@ import { calculateTotalPages } from '../../utils/helpers'
 
 const useWinners = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { winners, totalCount, status } = useSelector((state: RootState) => state.winners)
-  const { cars } = useSelector((state: RootState) => state.garage)
+  const { winners, totalCount, status, fetchingStatus } = useSelector(
+    (state: RootState) => state.winners,
+  )
+  const { cars, totalCount: carsTotalCount } = useSelector((state: RootState) => state.garage)
   const [searchParams, setSearchParams] = useSearchParams()
   const page = Number(searchParams.get('page')) || 1
   const [sort, setSort] = useState(searchParams.get('sort') || WINNERS_SORTING_TYPE)
@@ -29,7 +31,8 @@ const useWinners = () => {
   }))
 
   useEffect(() => {
-    dispatch(getCarsAsync({}))
+    dispatch(getCarsAsync({ limit: carsTotalCount }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch])
 
   useEffect(() => {
@@ -47,14 +50,15 @@ const useWinners = () => {
   )
 
   useEffect(() => {
-    setSearchParams({ page: '1', sort, order }, { replace: true })
-  }, [setSearchParams, order, sort])
+    setSearchParams({ page: String(page), sort, order }, { replace: true })
+  }, [setSearchParams, page, order, sort])
 
   return {
     data,
     totalCount,
     totalPages,
     status,
+    fetchingStatus,
     page,
     sort,
     order,

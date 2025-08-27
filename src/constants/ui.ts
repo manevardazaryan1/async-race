@@ -16,17 +16,17 @@ export const BUTTON_SIZES = {
 export const BUTTON_TYPES = {
   primary: {
     contained: {
-      backgroundColor: '#3f51b5',
+      backgroundColor: '#555555',
       color: '#fff',
       border: 'none',
       '&:hover': {
-        backgroundColor: '#303f9f',
+        backgroundColor: '#555555',
       },
     },
     outlined: {
       backgroundColor: 'transparent',
-      color: '#3f51b5',
-      border: '2px solid #3f51b5',
+      color: '#555555',
+      border: '2px solid #555555',
       '&:hover': {
         backgroundColor: 'rgba(63, 81, 181, 0.04)',
       },

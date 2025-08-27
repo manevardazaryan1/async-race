@@ -12,6 +12,7 @@ const initialState: GarageState = {
   isSingleRacing: false,
   carsDrivingState: {},
   status: STATUS.IDLE,
+  fetchingStatus: STATUS.IDLE,
   error: null,
 }
 
@@ -32,20 +33,24 @@ const garageSlice = createSlice({
     setIsUpdating: (state, action: PayloadAction<boolean>) => {
       state.isUpdating = action.payload
     },
+    clearCarsState: (state) => {
+      state.cars = []
+      state.totalCount = 0
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getCarsAsync.pending, (state) => {
-        state.status = STATUS.LOADING
+        state.fetchingStatus = STATUS.LOADING
         state.error = null
       })
       .addCase(getCarsAsync.fulfilled, (state, action: PayloadAction<Cars>) => {
-        state.status = STATUS.SUCCEEDED
+        state.fetchingStatus = STATUS.SUCCEEDED
         state.cars = action.payload.cars
         state.totalCount = action.payload.totalCount
       })
       .addCase(getCarsAsync.rejected, (state, action) => {
-        state.status = STATUS.FAILED
+        state.fetchingStatus = STATUS.FAILED
         state.error = action.error.message || 'Failed to load cars'
       })
       .addCase(createCarAsync.pending, (state) => {
@@ -96,5 +101,6 @@ const garageSlice = createSlice({
   },
 })
 
-export const { setIsRacing, setIsSingleRacing, setIsDriving, setIsUpdating } = garageSlice.actions
+export const { setIsRacing, setIsSingleRacing, setIsDriving, setIsUpdating, clearCarsState } =
+  garageSlice.actions
 export default garageSlice.reducer

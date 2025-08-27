@@ -1,20 +1,13 @@
 import { useEffect, useState, memo } from 'react'
-import { Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import useRace from '../../hooks/garage/useRace'
 import type { RacePanelProps } from '../../types/Garage'
 import { Button } from '../../shared/ui/Button'
 import Modal from '../../shared/ui/Modal'
 
 const RacePanel = ({ cars, carRefs }: RacePanelProps) => {
-  const {
-    messageForRaceResult,
-    messageForWinner,
-    isRacing,
-    isUpdating,
-    isSingleRacing,
-    handleReset,
-    handleRace,
-  } = useRace()
+  const { messageForWinner, isRacing, isUpdating, isSingleRacing, handleReset, handleRace } =
+    useRace()
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   useEffect(() => {
@@ -27,29 +20,33 @@ const RacePanel = ({ cars, carRefs }: RacePanelProps) => {
   }, [messageForWinner])
   return (
     <>
-      <Typography variant='h5' gutterBottom>
-        {messageForRaceResult}
-      </Typography>
-
-      <Button
-        customType='secondary'
-        customVariant='outlined'
-        customSize='small'
-        onClick={() => handleReset({ cars, carRefs })}
-        disabled={!isRacing}
-      >
-        Reset
-      </Button>
-      <Button
-        customType='secondary'
-        customVariant='outlined'
-        customSize='small'
-        onClick={() => handleRace({ cars, carRefs })}
-        disabled={isRacing || isSingleRacing || isUpdating}
-      >
-        Race
-      </Button>
-      <Modal isOpen={isOpen}>{messageForWinner}</Modal>
+      <Box className='race-panel-box'>
+        <Box className='race-control-box'>
+          <Button
+            customType='secondary'
+            customVariant='outlined'
+            customSize='medium'
+            onClick={() => handleReset({ cars, carRefs })}
+            disabled={!isRacing}
+            className='race-button'
+          >
+            Reset
+          </Button>
+          <Button
+            customType='secondary'
+            customVariant='outlined'
+            customSize='medium'
+            onClick={() => handleRace({ cars, carRefs })}
+            disabled={isRacing || isSingleRacing || isUpdating}
+            className='race-button'
+          >
+            Race
+          </Button>
+        </Box>
+      </Box>
+      <Modal isOpen={isOpen}>
+        <Box className='message-for-winner'>{messageForWinner}</Box>
+      </Modal>
     </>
   )
 }

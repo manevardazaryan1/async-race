@@ -19,6 +19,7 @@ export interface GarageState {
   isSingleRacing: boolean
   carsDrivingState: Record<number, boolean>
   status: Status
+  fetchingStatus: Status
   error: string | null
 }
 

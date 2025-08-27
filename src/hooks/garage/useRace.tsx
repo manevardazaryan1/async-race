@@ -4,25 +4,34 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import axios from 'axios'
 import type { RootState, AppDispatch } from '../../redux/store/store'
 import type { SingleRaceContext, RaceContext } from '../../types/Garage'
-import { setIsRacing, setIsSingleRacing, setIsDriving } from '../../redux/slices/garage'
+import {
+  setIsRacing,
+  setIsSingleRacing,
+  setIsDriving,
+  clearCarsState,
+} from '../../redux/slices/garage'
 import { getWinnersAsync, createWinnerAsync, updateWinnerAsync } from '../../services/winners'
 import { startEngineAsync, stopEngineAsync, driveCarAsync } from '../../services/engine'
 import { calculateTime } from '../../utils/helpers'
-import { animate, getCurrentCoordinate } from '../../utils/helpers'
+import { animate, calculateDistance, getCurrentCoordinate } from '../../utils/helpers'
 
 const useRace = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { winners } = useSelector((state: RootState) => state.winners)
+  const { winners, totalCount: winnersTotalCount } = useSelector(
+    (state: RootState) => state.winners,
+  )
   const { isRacing, isSingleRacing, isUpdating } = useSelector((state: RootState) => state.garage)
-  const [messageForRaceResult, setMessageForRaceResult] = useState<string>('Result of Race')
+  const [messageForRaceResult, setMessageForRaceResult] = useState<string>('Result of a race...')
   const [messageForWinner, setMessageForWinner] = useState<string>('')
   const controllers = useRef<Record<number, AbortController>>({})
 
   useEffect(() => {
+    dispatch(clearCarsState())
     const getWinners = async () => {
-      await dispatch(getWinnersAsync({}))
+      await dispatch(getWinnersAsync({ limit: winnersTotalCount }))
     }
     getWinners()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch])
 
   const handleStartEngine = useCallback(
@@ -31,7 +40,7 @@ const useRace = () => {
       const { data } = unwrapResult(startResponse)
       const { velocity, distance } = data
       const time = calculateTime(distance, velocity)
-      animate(id, time, 1000, carRefs)
+      animate(id, time, calculateDistance(carRefs.current[id]), carRefs)
       return time
     },
     [dispatch],
@@ -73,6 +82,7 @@ const useRace = () => {
   const handleReset = useCallback(
     async ({ cars, carRefs }: RaceContext) => {
       dispatch(setIsRacing(false))
+      setMessageForRaceResult('')
       await Promise.all(
         cars.map(({ id }) => {
           handleStop({ id, carRefs })
@@ -102,9 +112,9 @@ const useRace = () => {
           if (!winnerId) {
             winnerId = index
             winningTime = time
-            setMessageForWinner(`winner is ${name}`)
+            setMessageForWinner(`Winner is ${name}`)
           }
-          setMessageForRaceResult(`Car ${index} finished!`)
+          setMessageForRaceResult(`Car ${name} finished!`)
         } else if (driveCarAsync.rejected.match(datum)) {
           setMessageForRaceResult(`${index}`)
           handleCrush({ id, carRefs })
@@ -137,9 +147,10 @@ const useRace = () => {
         } else {
           await dispatch(createWinnerAsync({ id, wins: 1, time }))
         }
-        setMessageForRaceResult(`winner is ${car?.name}`)
+        setMessageForRaceResult(`Winner is ${car?.name}`)
       } else {
         setMessageForRaceResult(`No winner`)
+        setMessageForWinner(`No winner`)
       }
     },
     [dispatch, handleSingleRace, winners],

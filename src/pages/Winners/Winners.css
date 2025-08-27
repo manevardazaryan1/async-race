@@ -1,0 +1,42 @@
+.sort-order-control label,
+.sort-order-control div,
+.sort-order-control svg {
+  color: #fff !important;
+  text-transform: capitalize;
+  font-size: 21px;
+}
+
+.sort-select-item {
+  text-transform: capitalize !important;
+}
+
+.winners-box {
+  margin-top: 20px;
+}
+
+.order-icon {
+  color: #fff !important;
+  border-radius: 4px !important;
+  background-color: #555555 !important;
+  margin: 0 20px 20px 0px !important;
+}
+
+.sort-order-control {
+  margin: 0 20px 20px 20px !important;
+  background-color: #555555 !important;
+  min-width: 200px !important;
+  border-radius: 4px !important;
+}
+
+.winners-table-box {
+  padding: 0 20px !important;
+}
+
+@media screen and (max-width: 500) {
+  .sort-order-box {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

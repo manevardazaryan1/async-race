@@ -25,32 +25,38 @@ const CreationEditionPanel = ({ editingCar, onCompleteEdit }: CarCreationEdition
   const { isRacing, isSingleRacing, isUpdating } = useRace()
 
   return (
-    <Box>
-      <DebounceInput
-        element={TextField}
-        minLength={2}
-        debounceTimeout={300}
-        value={name}
-        onChange={handleNameChange}
-        onKeyDown={handleKeyDown}
-        placeholder='Car Name'
-        disabled={isRacing || isSingleRacing}
-      />
-      <TextField
-        type='color'
-        value={color}
-        onChange={handleColorChange}
-        disabled={isRacing || isSingleRacing}
-      />
-      <Button
-        onClick={editingCar ? handleUpdate : handleCreate}
-        disabled={!name || isRacing || isSingleRacing}
-      >
-        {editingCar ? 'Update' : 'Create'}
-      </Button>
+    <Box className='create-update-box'>
+      <Box className='create-update-car-box'>
+        <DebounceInput
+          element={TextField}
+          minLength={2}
+          debounceTimeout={300}
+          value={name}
+          onChange={handleNameChange}
+          onKeyDown={handleKeyDown}
+          placeholder='Car Name'
+          disabled={isRacing || isSingleRacing}
+          className='create-update'
+        />
+        <TextField
+          type='color'
+          value={color}
+          onChange={handleColorChange}
+          disabled={isRacing || isSingleRacing}
+          className='color'
+        />
+        <Button
+          onClick={editingCar ? handleUpdate : handleCreate}
+          disabled={!name || isRacing || isSingleRacing}
+          className='update-create-button'
+        >
+          {editingCar ? 'Update' : 'Create'}
+        </Button>
+      </Box>
       <Button
         onClick={() => handleGenerateRandomCars(GENERATED_RANDOM_CARS_COUNT)}
         disabled={isRacing || isSingleRacing || isUpdating}
+        className='generate-random-cars-button'
       >
         Generate Random Cars (100)
       </Button>

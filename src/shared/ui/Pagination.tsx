@@ -10,6 +10,7 @@ const Pagination = ({ count, page, disabled, handlePageChange }: PaginationPanel
       onChange={handlePageChange}
       style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
       disabled={disabled}
+      className='pagination'
     />
   )
 }

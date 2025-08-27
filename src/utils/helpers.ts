@@ -32,6 +32,27 @@ export const getCurrentCoordinate = (car: HTMLDivElement | null): number | undef
   return matrix.m41
 }
 
+export const getCurrentCoordinateFromTheScreen = (
+  car: HTMLDivElement | null,
+): number | undefined => {
+  if (!car) return
+  const rect = car.getBoundingClientRect()
+  return rect.left
+}
+
+export const getWidth = (car: HTMLDivElement | null): number | undefined => {
+  if (!car) return
+  const carRect = car.getBoundingClientRect()
+  return carRect.width
+}
+
+export const calculateDistance = (car: HTMLDivElement | null): number | undefined => {
+  if (!car) return
+  return (
+    window.innerWidth - (getCurrentCoordinateFromTheScreen(car) ?? 0) - (getWidth(car) ?? 0) - 20
+  )
+}
+
 export const animate = (
   id: number,
   time: number,
@@ -41,5 +62,5 @@ export const animate = (
   const car = carRefs.current[id]
   if (!car) return
   car.style.transform = `translate(${distance}px)`
-  car.style.transition = `transform ${time}ms linear`
+  car.style.transition = `transform ${time}ms ease-in-out`
 }

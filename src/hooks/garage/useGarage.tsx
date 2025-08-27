@@ -12,7 +12,9 @@ import { calculateTotalPages } from '../../utils/helpers'
 
 const useGarage = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { cars, totalCount, status } = useSelector((state: RootState) => state.garage)
+  const { cars, totalCount, status, fetchingStatus } = useSelector(
+    (state: RootState) => state.garage,
+  )
   const carRefs = useRef<Record<number, HTMLDivElement | null>>({})
   const [searchParams, setSearchParams] = useSearchParams()
   const [editingCar, setEditingCar] = useState<Car | null>(null)
@@ -74,6 +76,7 @@ const useGarage = () => {
     carRefs,
     totalCount,
     status,
+    fetchingStatus,
     editingCar,
     page,
     totalPages,

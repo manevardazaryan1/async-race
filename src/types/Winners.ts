@@ -16,6 +16,7 @@ export interface WinnersState {
   winners: Winner[]
   totalCount: number
   status: Status
+  fetchingStatus: Status
   error: string | null
 }
 

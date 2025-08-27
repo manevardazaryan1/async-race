@@ -1,0 +1,79 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 0px 30px 5px rgb(119 119 120 / 54%);
+  padding: 15px 0;
+}
+
+.logo {
+  border: 4px solid;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  animation-name: neon-border-color;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  padding: 7px;
+  font-family: 'Zen Dots', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #fff;
+  text-shadow:
+    0 0 7px #fff,
+    0 0 21px #003153,
+    0 0 102px #003153,
+    0 0 151px #003153;
+  font-size: 27px;
+}
+
+@keyframes neon-border-color {
+  0% {
+    border-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+  }
+  25% {
+    border-color: #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
+  }
+  50% {
+    border-color: #ffff00;
+    box-shadow: 0 0 10px #ffff00;
+  }
+  75% {
+    border-color: #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+  }
+  100% {
+    border-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff;
+  }
+}
+
+.navbar {
+  background-color: #000 !important;
+}
+
+.menu-item {
+  font-size: 21px !important;
+  font-family: 'Zen Dots', sans-serif !important;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@media screen and (max-width: 600px) {
+  .toolbar {
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-box {
+    margin: 20px 0;
+  }
+
+  .menu-item {
+    margin: 0 20px;
+    padding: 10 !important;
+    margin: 10 !important;
+  }
+}
