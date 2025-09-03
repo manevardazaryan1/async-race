@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { STATUS } from '../../constants/app'
+import type { RootState } from '../store/store'
 import type { WinnersState, Winners, Winner } from '../../types/Winners'
 import {
   getWinnersAsync,
@@ -13,9 +14,12 @@ const initialState: WinnersState = {
   winners: [],
   totalCount: 0,
   status: STATUS.IDLE,
-  fetchingStatus: STATUS.IDLE,
   error: null,
 }
+
+export const selectWinners = (state: RootState) => state.winners.winners
+export const selectTotalCount = (state: RootState) => state.winners.totalCount
+export const selectStatus = (state: RootState) => state.winners.status
 
 const winnersSlice = createSlice({
   name: 'winners',

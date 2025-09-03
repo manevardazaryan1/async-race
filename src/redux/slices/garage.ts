@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { STATUS } from '../../constants/app'
+import type { RootState } from '../store/store'
 import type { GarageState, Cars, Car } from '../../types/Garage'
 import { getCarsAsync, createCarAsync, deleteCarAsync, updateCarAsync } from '../../services/garage'
 
@@ -12,9 +13,16 @@ const initialState: GarageState = {
   isSingleRacing: false,
   carsDrivingState: {},
   status: STATUS.IDLE,
-  fetchingStatus: STATUS.IDLE,
   error: null,
 }
+
+export const selectCars = (state: RootState) => state.garage.cars
+export const selectTotalCount = (state: RootState) => state.garage.totalCount
+export const selectIsRacing = (state: RootState) => state.garage.isRacing
+export const selectIsSingleRacing = (state: RootState) => state.garage.isSingleRacing
+export const selectDrivingState = (state: RootState) => state.garage.carsDrivingState
+export const selectStatus = (state: RootState) => state.garage.status
+export const selectIsUpdating = (state: RootState) => state.garage.isUpdating
 
 const garageSlice = createSlice({
   name: 'garage',
@@ -33,33 +41,28 @@ const garageSlice = createSlice({
     setIsUpdating: (state, action: PayloadAction<boolean>) => {
       state.isUpdating = action.payload
     },
-    clearCarsState: (state) => {
-      state.cars = []
-      state.totalCount = 0
-    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getCarsAsync.pending, (state) => {
-        state.fetchingStatus = STATUS.LOADING
+        state.status = STATUS.LOADING
         state.error = null
       })
       .addCase(getCarsAsync.fulfilled, (state, action: PayloadAction<Cars>) => {
-        state.fetchingStatus = STATUS.SUCCEEDED
+        state.status = STATUS.SUCCEEDED
         state.cars = action.payload.cars
         state.totalCount = action.payload.totalCount
       })
       .addCase(getCarsAsync.rejected, (state, action) => {
-        state.fetchingStatus = STATUS.FAILED
+        state.status = STATUS.FAILED
         state.error = action.error.message || 'Failed to load cars'
       })
       .addCase(createCarAsync.pending, (state) => {
         state.status = STATUS.LOADING
         state.error = null
       })
-      .addCase(createCarAsync.fulfilled, (state, action: PayloadAction<Car>) => {
+      .addCase(createCarAsync.fulfilled, (state) => {
         state.status = STATUS.SUCCEEDED
-        state.cars.push(action.payload)
         state.totalCount += 1
       })
       .addCase(createCarAsync.rejected, (state, action) => {
@@ -101,6 +104,5 @@ const garageSlice = createSlice({
   },
 })
 
-export const { setIsRacing, setIsSingleRacing, setIsDriving, setIsUpdating, clearCarsState } =
-  garageSlice.actions
+export const { setIsRacing, setIsSingleRacing, setIsDriving, setIsUpdating } = garageSlice.actions
 export default garageSlice.reducer

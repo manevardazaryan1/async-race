@@ -1,13 +1,8 @@
-import axios from 'axios'
+import { api } from './api'
 import type { Cars, Car } from '../types/Garage'
 
-export const getCars = async (
-  api_base_url: string,
-  endpoint: string,
-  page?: number,
-  limit?: number,
-): Promise<Cars> => {
-  const response = await axios.get<Car[]>(`${api_base_url}/${endpoint}`, {
+export const getCars = async (endpoint: string, page?: number, limit?: number): Promise<Cars> => {
+  const response = await api.get<Car[]>(`/${endpoint}`, {
     params: {
       _page: page,
       _limit: limit,
@@ -21,41 +16,31 @@ export const getCars = async (
   }
 }
 
-export const getCar = async (api_base_url: string, endpoint: string, id: number): Promise<Car> => {
-  const response = await axios.get<Car>(`${api_base_url}/${endpoint}/${id}`)
+export const getCar = async (endpoint: string, id: number): Promise<Car> => {
+  const response = await api.get<Car>(`/${endpoint}/${id}`)
   return response.data
 }
 
-export const createCar = async (
-  api_base_url: string,
-  endpoint: string,
-  name: string,
-  color: string,
-): Promise<Car> => {
-  const response = await axios.post<Car>(`${api_base_url}/${endpoint}`, {
+export const createCar = async (endpoint: string, name: string, color: string): Promise<Car> => {
+  const response = await api.post<Car>(`/${endpoint}`, {
     name,
     color,
   })
   return response.data
 }
 
-export const deleteCar = async (
-  api_base_url: string,
-  endpoint: string,
-  id: number,
-): Promise<number> => {
-  await axios.delete(`${api_base_url}/${endpoint}/${id}`)
+export const deleteCar = async (endpoint: string, id: number): Promise<number> => {
+  await api.delete(`/${endpoint}/${id}`)
   return id
 }
 
 export const updateCar = async (
-  api_base_url: string,
   endpoint: string,
   id: number,
   name?: string,
   color?: string,
 ): Promise<Car | null> => {
-  const response = await axios.put<Car>(`${api_base_url}/${endpoint}/${id}`, {
+  const response = await api.put<Car>(`/${endpoint}/${id}`, {
     name,
     color,
   })

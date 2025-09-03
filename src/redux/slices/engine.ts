@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { STATUS } from '../../constants/app'
 import type { EngineState, EngineStartResponse } from '../../types/Engine'
+import type { RootState } from '../store/store'
 import { startEngineAsync, stopEngineAsync, driveCarAsync } from '../../services/engine'
 
 const initialState: EngineState = {
@@ -11,6 +12,10 @@ const initialState: EngineState = {
   status: STATUS.IDLE,
   error: null,
 }
+
+export const selectVelocity = (state: RootState) => state.engine.velocity
+export const selectDistance = (state: RootState) => state.engine.distance
+export const status = (state: RootState) => state.engine.status
 
 const engineSlice = createSlice({
   name: 'engine',

@@ -1,14 +1,12 @@
 import { memo } from 'react'
 import { List, Typography, Box } from '@mui/material'
 import type { CarsPanelProps } from '../../types/Garage'
-import { STATUS } from '../../constants/app'
 import Car from './Car'
 
 const Cars = ({
   cars,
   carRefs,
   totalCount,
-  status,
   handleEdit,
   handleDelete,
   handleDrive,
@@ -16,7 +14,7 @@ const Cars = ({
 }: CarsPanelProps) => {
   return (
     <>
-      {totalCount === 0 && status === STATUS.SUCCEEDED && (
+      {totalCount === 0 && (
         <Typography variant='h5' gutterBottom>
           No cars available
         </Typography>

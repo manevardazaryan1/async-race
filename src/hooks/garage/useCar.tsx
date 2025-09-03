@@ -1,10 +1,16 @@
-import { useSelector } from 'react-redux'
-import type { RootState } from '../../redux/store/store'
+import { useAppSelector } from '../app/useAppSelector'
+import {
+  selectIsRacing,
+  selectIsSingleRacing,
+  selectDrivingState,
+  selectIsUpdating,
+} from '../../redux/slices/garage'
 
 const useCar = () => {
-  const { isRacing, isUpdating, carsDrivingState, isSingleRacing } = useSelector(
-    (state: RootState) => state.garage,
-  )
+  const isRacing = useAppSelector(selectIsRacing)
+  const isUpdating = useAppSelector(selectIsUpdating)
+  const carsDrivingState = useAppSelector(selectDrivingState)
+  const isSingleRacing = useAppSelector(selectIsSingleRacing)
   return {
     isRacing,
     isUpdating,

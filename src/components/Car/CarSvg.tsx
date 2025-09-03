@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 const CarSvg = ({ color = '#000', size = 300 }) => {
   return (
     <div className='flex justify-center items-center h-screen bg-gray-100 p-4'>
@@ -102,4 +104,4 @@ const CarSvg = ({ color = '#000', size = 300 }) => {
   )
 }
 
-export default CarSvg
+export default memo(CarSvg)

@@ -19,7 +19,6 @@ export interface GarageState {
   isSingleRacing: boolean
   carsDrivingState: Record<number, boolean>
   status: Status
-  fetchingStatus: Status
   error: string | null
 }
 
@@ -37,7 +36,6 @@ export interface CarsPanelProps {
   cars: Car[]
   carRefs: React.MutableRefObject<Record<number, HTMLDivElement | null>>
   totalCount: number
-  status: Status
   handleEdit: (car: Car) => void
   handleDelete: (id: number) => void
   handleDrive: ({ id, carRefs }: SingleRaceContext) => void

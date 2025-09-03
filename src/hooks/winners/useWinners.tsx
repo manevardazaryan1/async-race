@@ -1,8 +1,14 @@
 import { useEffect, useCallback, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-import { getCarsAsync } from '../../services/garage'
-import type { RootState, AppDispatch } from '../../redux/store/store'
+import { useAppDispatch } from '../app/useAppDispatch'
+import { useAppSelector } from '../app/useAppSelector'
+import type { Car } from '../../types/Garage'
+import {
+  selectTotalCount as selectWinnersTotalCount,
+  selectStatus,
+  selectWinners,
+} from '../../redux/slices/winners'
+import { getCarAsync } from '../../services/garage'
 import { getWinnersAsync } from '../../services/winners'
 import {
   WINNERS_ORDERING_TYPE,
@@ -12,35 +18,40 @@ import {
 import { calculateTotalPages } from '../../utils/helpers'
 
 const useWinners = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { winners, totalCount, status, fetchingStatus } = useSelector(
-    (state: RootState) => state.winners,
-  )
-  const { cars, totalCount: carsTotalCount } = useSelector((state: RootState) => state.garage)
+  const dispatch = useAppDispatch()
+  const winners = useAppSelector(selectWinners)
+  const totalCount = useAppSelector(selectWinnersTotalCount)
+  const status = useAppSelector(selectStatus)
   const [searchParams, setSearchParams] = useSearchParams()
   const page = Number(searchParams.get('page')) || 1
   const [sort, setSort] = useState(searchParams.get('sort') || WINNERS_SORTING_TYPE)
   const [order, setOrder] = useState(searchParams.get('sort') || WINNERS_ORDERING_TYPE)
+  const [cars, setCars] = useState<Record<number, Car>>({})
   const totalPages = calculateTotalPages(totalCount, WINNERS_VIEW_PAGE_SIZE)
 
-  const data = winners.map(({ id, wins, time }) => ({
-    id,
-    wins,
-    time,
-    car: cars.find((car) => car.id === id),
-  }))
-
   useEffect(() => {
-    dispatch(getCarsAsync({ limit: carsTotalCount }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch])
+    const getCars = async () => {
+      const ids = winners.map(({ id }) => id)
+      const promises = ids.map((id) => dispatch(getCarAsync({ id })).unwrap())
 
-  useEffect(() => {
-    const getWinners = async () => {
-      await dispatch(getWinnersAsync({ page, sort, order }))
+      const cars = await Promise.all(promises)
+      const carMap = cars.reduce((acc, car) => ({ ...acc, [car.id]: car }), {})
+      setCars(carMap)
     }
-    getWinners()
-  }, [dispatch, searchParams, page, sort, order])
+
+    getCars()
+  }, [dispatch, winners])
+
+  useEffect(() => {
+    setSearchParams((prev) => ({
+      ...Object.fromEntries(prev),
+      page: page.toString(),
+      sort,
+      order,
+    }))
+
+    dispatch(getWinnersAsync({ page, sort, order }))
+  }, [dispatch, setSearchParams, page, sort, order])
 
   const handlePageChange = useCallback(
     (_: React.ChangeEvent<unknown>, value: number) => {
@@ -49,16 +60,12 @@ const useWinners = () => {
     [setSearchParams],
   )
 
-  useEffect(() => {
-    setSearchParams({ page: String(page), sort, order }, { replace: true })
-  }, [setSearchParams, page, order, sort])
-
   return {
-    data,
+    winners,
+    cars,
     totalCount,
     totalPages,
     status,
-    fetchingStatus,
     page,
     sort,
     order,

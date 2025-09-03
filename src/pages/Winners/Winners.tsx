@@ -17,20 +17,18 @@ import {
 import { memo } from 'react'
 import { ArrowDropUp, ArrowDropDown } from '@mui/icons-material'
 import useWinners from '../../hooks/winners/useWinners'
-import { STATUS, WINNERS_VIEW_NAME } from '../../constants/app'
+import { WINNERS_VIEW_NAME } from '../../constants/app'
 import { WINNERS_ORDERING_TYPES, WINNERS_SORTING_TYPES } from '../../constants/api'
 import Pagination from '../../shared/ui/Pagination'
-import Loading from '../../components/Loading/Loading'
 import CarSvg from '../../components/Car/CarSvg'
 import './Winners.css'
 
 const Winners = () => {
   const {
-    data,
+    winners,
+    cars,
     totalCount,
     totalPages,
-    status,
-    fetchingStatus,
     page,
     sort,
     order,
@@ -47,7 +45,7 @@ const Winners = () => {
     }
   }
 
-  if (totalCount === 0 && status === STATUS.SUCCEEDED) {
+  if (totalCount === 0) {
     return (
       <Box className='no-items-box'>
         <Typography variant='h5' color='text.secondary'>
@@ -59,7 +57,6 @@ const Winners = () => {
 
   return (
     <>
-      {fetchingStatus === STATUS.LOADING && <Loading />}
       <Box className='winners-box'>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} className='sort-order-box'>
           <FormControl size='small' className='sort-order-control'>
@@ -90,7 +87,7 @@ const Winners = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((datum) => (
+                {winners.map((datum) => (
                   <TableRow
                     key={datum.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -99,11 +96,11 @@ const Winners = () => {
                       {datum.id}
                     </TableCell>
                     <TableCell>
-                      <CarSvg color={datum.car?.color} size={30} />
+                      <CarSvg color={cars[datum.id]?.color} size={30} />
                     </TableCell>
-                    <TableCell>{datum.car?.name}</TableCell>
+                    <TableCell>{cars[datum.id]?.name}</TableCell>
                     <TableCell>{datum.wins}</TableCell>
-                    <TableCell>{datum.time.toFixed(2)}</TableCell>
+                    <TableCell>{datum.time}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

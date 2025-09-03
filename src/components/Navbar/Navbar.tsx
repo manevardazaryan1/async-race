@@ -9,7 +9,14 @@ const Navbar = () => {
     <AppBar position='static' className='navbar'>
       <Toolbar className='toolbar'>
         <Box className='logo-box'>
-          <Link to='/' className='logo'>
+          <Link
+            to='/'
+            className='logo'
+            style={{
+              pointerEvents: isRacing || isSingleRacing ? 'none' : 'auto',
+              cursor: isRacing || isSingleRacing ? 'default' : 'pointer',
+            }}
+          >
             ASYNC RACE
           </Link>
         </Box>

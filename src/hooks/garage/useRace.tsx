@@ -1,14 +1,17 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch } from '../app/useAppDispatch'
+import { useAppSelector } from '../app/useAppSelector'
 import { unwrapResult } from '@reduxjs/toolkit'
 import axios from 'axios'
-import type { RootState, AppDispatch } from '../../redux/store/store'
 import type { SingleRaceContext, RaceContext } from '../../types/Garage'
+import { selectWinners, selectTotalCount } from '../../redux/slices/winners'
 import {
   setIsRacing,
   setIsSingleRacing,
   setIsDriving,
-  clearCarsState,
+  selectIsRacing,
+  selectIsSingleRacing,
+  selectIsUpdating,
 } from '../../redux/slices/garage'
 import { getWinnersAsync, createWinnerAsync, updateWinnerAsync } from '../../services/winners'
 import { startEngineAsync, stopEngineAsync, driveCarAsync } from '../../services/engine'
@@ -16,23 +19,22 @@ import { calculateTime } from '../../utils/helpers'
 import { animate, calculateDistance, getCurrentCoordinate } from '../../utils/helpers'
 
 const useRace = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { winners, totalCount: winnersTotalCount } = useSelector(
-    (state: RootState) => state.winners,
-  )
-  const { isRacing, isSingleRacing, isUpdating } = useSelector((state: RootState) => state.garage)
+  const dispatch = useAppDispatch()
+  const winners = useAppSelector(selectWinners)
+  const winnersTotalCount = useAppSelector(selectTotalCount)
+  const isRacing = useAppSelector(selectIsRacing)
+  const isSingleRacing = useAppSelector(selectIsSingleRacing)
+  const isUpdating = useAppSelector(selectIsUpdating)
   const [messageForRaceResult, setMessageForRaceResult] = useState<string>('Result of a race...')
   const [messageForWinner, setMessageForWinner] = useState<string>('')
   const controllers = useRef<Record<number, AbortController>>({})
 
   useEffect(() => {
-    dispatch(clearCarsState())
     const getWinners = async () => {
       await dispatch(getWinnersAsync({ limit: winnersTotalCount }))
     }
     getWinners()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch])
+  }, [dispatch, winnersTotalCount])
 
   const handleStartEngine = useCallback(
     async ({ id, carRefs }: SingleRaceContext) => {

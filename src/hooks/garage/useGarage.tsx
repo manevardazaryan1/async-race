@@ -1,59 +1,56 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch } from '../app/useAppDispatch'
+import { useAppSelector } from '../app/useAppSelector'
 import { useSearchParams } from 'react-router-dom'
-import type { RootState, AppDispatch } from '../../redux/store/store'
 import type { Car } from '../../types/Garage'
-import { setIsUpdating } from '../../redux/slices/garage'
-import { deleteWinnerAsync } from '../../services/winners'
+import { setIsUpdating, selectCars, selectTotalCount } from '../../redux/slices/garage'
+import { deleteWinnerAsync, getWinnerAsync } from '../../services/winners'
 import { getCarsAsync, deleteCarAsync } from '../../services/garage'
 import { GARAGE_VIEW_PAGE_SIZE } from '../../constants/api'
-import { STATUS } from '../../constants/app'
 import { calculateTotalPages } from '../../utils/helpers'
 
 const useGarage = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { cars, totalCount, status, fetchingStatus } = useSelector(
-    (state: RootState) => state.garage,
-  )
+  const dispatch = useAppDispatch()
+  const cars = useAppSelector(selectCars)
+  const totalCount = useAppSelector(selectTotalCount)
   const carRefs = useRef<Record<number, HTMLDivElement | null>>({})
   const [searchParams, setSearchParams] = useSearchParams()
   const [editingCar, setEditingCar] = useState<Car | null>(null)
   const page = Number(searchParams.get('page')) || 1
   const totalPages = calculateTotalPages(totalCount, GARAGE_VIEW_PAGE_SIZE)
-  const prevTotalCount = useRef(totalCount)
 
   useEffect(() => {
-    dispatch(getCarsAsync({ page }))
-  }, [dispatch, page])
-
-  useEffect(() => {
-    if (prevTotalCount.current !== 0 && totalCount > prevTotalCount.current) {
-      setSearchParams({ page: totalPages.toString() }, { replace: true })
+    const getCars = async () => {
+      await dispatch(getCarsAsync({ page }))
+    }
+    if (cars.length === 0 && page === totalPages + 1) {
+      setSearchParams((prev) => ({
+        ...Object.fromEntries(prev),
+        page: totalPages.toString(),
+      }))
     }
 
-    if (prevTotalCount.current !== 0 && totalCount < prevTotalCount.current) {
-      dispatch(getCarsAsync({ page }))
-    }
+    getCars()
+  }, [dispatch, page, totalCount, totalPages, setSearchParams, cars.length])
 
-    prevTotalCount.current = totalCount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, totalCount, totalPages, setSearchParams])
-
-  useEffect(() => {
-    if (page > 1 && cars.length === 0 && status === STATUS.SUCCEEDED) {
-      setSearchParams({ page: totalPages.toString() }, { replace: true })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalPages])
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setSearchParams((prev) => ({ ...Object.fromEntries(prev), page: value.toString() }))
-  }
+  const handlePageChange = useCallback(
+    (_: React.ChangeEvent<unknown>, value: number) => {
+      setSearchParams((prev) => ({ ...Object.fromEntries(prev), page: value.toString() }))
+    },
+    [setSearchParams],
+  )
 
   const handleDelete = useCallback(
     async (id: number) => {
       await dispatch(deleteCarAsync(id))
-      await dispatch(deleteWinnerAsync({ id }))
+      try {
+        const winner = await dispatch(getWinnerAsync({ id })).unwrap()
+        if (winner) {
+          await dispatch(deleteWinnerAsync({ id }))
+        }
+      } catch {
+        return
+      }
     },
     [dispatch],
   )
@@ -75,8 +72,6 @@ const useGarage = () => {
     cars,
     carRefs,
     totalCount,
-    status,
-    fetchingStatus,
     editingCar,
     page,
     totalPages,

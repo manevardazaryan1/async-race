@@ -1,15 +1,14 @@
-import axios from 'axios'
+import { api } from './api'
 import type { Winners, Winner } from '../types/Winners'
 
 export const getWinners = async (
-  api_base_url: string,
   endpoint: string,
   page?: number,
   limit?: number,
   sort?: string,
   order?: string,
 ): Promise<Winners> => {
-  const response = await axios.get<Winner[]>(`${api_base_url}/${endpoint}`, {
+  const response = await api.get<Winner[]>(`/${endpoint}`, {
     params: {
       _page: page,
       _limit: limit,
@@ -23,23 +22,18 @@ export const getWinners = async (
   return { winners, totalCount }
 }
 
-export const getWinner = async (
-  api_base_url: string,
-  endpoint: string,
-  id: number,
-): Promise<Winner> => {
-  const response = await axios.get<Winner>(`${api_base_url}/${endpoint}/${id}`)
+export const getWinner = async (endpoint: string, id: number): Promise<Winner> => {
+  const response = await api.get<Winner>(`/${endpoint}/${id}`)
   return response.data
 }
 
 export const createWinner = async (
-  api_base_url: string,
   endpoint: string,
   id: number,
   wins: number,
   time: number,
 ): Promise<Winner> => {
-  const response = await axios.post<Winner>(`${api_base_url}/${endpoint}`, {
+  const response = await api.post<Winner>(`/${endpoint}`, {
     id,
     wins,
     time,
@@ -47,23 +41,18 @@ export const createWinner = async (
   return response.data
 }
 
-export const deleteWinner = async (
-  api_base_url: string,
-  endpoint: string,
-  id: number,
-): Promise<number> => {
-  await axios.delete(`${api_base_url}/${endpoint}/${id}`)
+export const deleteWinner = async (endpoint: string, id: number): Promise<number> => {
+  await api.delete(`/${endpoint}/${id}`)
   return id
 }
 
 export const updateWinner = async (
-  api_base_url: string,
   endpoint: string,
   id: number,
   wins?: number,
   time?: number,
 ): Promise<Winner | null> => {
-  const response = await axios.put<Winner>(`${api_base_url}/${endpoint}/${id}`, {
+  const response = await api.put<Winner>(`/${endpoint}/${id}`, {
     wins,
     time,
   })

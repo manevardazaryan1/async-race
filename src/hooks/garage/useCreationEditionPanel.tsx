@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import type { AppDispatch, RootState } from '../../redux/store/store'
+import { useAppDispatch } from '../app/useAppDispatch'
+import { useAppSelector } from '../app/useAppSelector'
 import type { useCarCreationEditionPanelProps } from '../../types/Garage'
+import { selectDrivingState } from '../../redux/slices/garage'
 import { createCarAsync, updateCarAsync } from '../../services/garage'
 import { generateCarName, generateColor } from '../../utils/helpers'
 
@@ -9,12 +10,12 @@ const useCreationEditionPanel = ({
   editingCar,
   onCompleteEdit,
 }: useCarCreationEditionPanelProps) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const [name, setName] = useState<string>('')
   const [color, setColor] = useState<string>('#000000')
   const [isGenerating, setIsGenerating] = useState<boolean>(false)
   const [progress, setProgress] = useState<number>(0)
-  const { carsDrivingState } = useSelector((state: RootState) => state.garage)
+  const carsDrivingState = useAppSelector(selectDrivingState)
 
   useEffect(() => {
     if (editingCar) {
@@ -31,7 +32,6 @@ const useCreationEditionPanel = ({
     await dispatch(createCarAsync({ name, color }))
     setName('')
     setColor('#000000')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, color, name])
 
   const handleUpdate = useCallback(async () => {
@@ -73,7 +73,9 @@ const useCreationEditionPanel = ({
         const randomName = generateCarName()
         const randomColor = generateColor()
         const newProgress = ((i + 1) / count) * 100
+
         setProgress(newProgress)
+
         await dispatch(createCarAsync({ name: randomName, color: randomColor }))
       }
       setIsGenerating(false)

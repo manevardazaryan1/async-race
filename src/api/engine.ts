@@ -1,13 +1,12 @@
-import axios from 'axios'
+import { api } from './api'
 import type { EngineStartResponse } from '../types/Engine'
 
 export const startEngine = async (
-  api_base_url: string,
   endpoint: string,
   status: string,
   id: number,
 ): Promise<{ id: number; data: EngineStartResponse }> => {
-  const response = await axios.patch<EngineStartResponse>(`${api_base_url}/${endpoint}`, null, {
+  const response = await api.patch<EngineStartResponse>(`/${endpoint}`, null, {
     params: {
       id,
       status,
@@ -16,13 +15,8 @@ export const startEngine = async (
   return { id, data: response.data }
 }
 
-export const stopEngine = async (
-  api_base_url: string,
-  endpoint: string,
-  status: string,
-  id: number,
-): Promise<number> => {
-  await axios.patch(`${api_base_url}/${endpoint}`, null, {
+export const stopEngine = async (endpoint: string, status: string, id: number): Promise<number> => {
+  await api.patch(`/${endpoint}`, null, {
     params: {
       id,
       status,
@@ -32,14 +26,13 @@ export const stopEngine = async (
 }
 
 export const driveCar = async (
-  api_base_url: string,
   endpoint: string,
   status: string,
   id: number,
   signal?: AbortSignal,
 ): Promise<number> => {
   try {
-    await axios.patch(`${api_base_url}/${endpoint}`, null, {
+    await api.patch(`/${endpoint}`, null, {
       params: { id, status },
       signal,
     })
